@@ -28,13 +28,14 @@ urllib3.disable_warnings(urllib3.exceptions.InsecurePlatformWarning)
 
 
 class HTTPClient(object):
-    def __init__(self,
-                 endpoint,
-                 api_key,
-                 headers=None,
-                 query_params=None,
-                 cert=None,
-                 trust_all=False):
+    def __init__(
+            self,
+            endpoint,
+            api_key,
+            headers=None,
+            query_params=None,
+            cert=None,
+            trust_all=False):
         self.endpoint = endpoint
         self.api_key = api_key
         self.headers = headers.copy() if headers else {}
@@ -61,16 +62,18 @@ class HTTPClient(object):
                     url, response.status_code))
         return response.json()
 
-    def get_asset(self,
-                  uri,
-                  asset,
-                  data=None,
-                  params=None,
-                  headers=None,
-                  _include=None,
-                  expected_status_code=200,
-                  stream=False):
-        url =  '{0}{1}?api_key={2}&name={3}'.format(self.endpoint,  uri, self.api_key, asset)
+    def get_asset(
+            self,
+            uri,
+            asset,
+            data=None,
+            params=None,
+            headers=None,
+            _include=None,
+            expected_status_code=200,
+            stream=False):
+        url = '{0}{1}?api_key={2}&name={3}'.format(
+            self.endpoint,  uri, self.api_key, asset)
         response = requests.get(url,
                                 data=data,
                                 params=params,
@@ -78,8 +81,8 @@ class HTTPClient(object):
                                 stream=stream)
         if response.status_code != 200:
             raise RuntimeError(
-                    'Request to {0} failed! (HTTP Error Code: {1})'.format(
-                            url, response.status_code))
+                'Request to {0} failed! (HTTP Error Code: {1})'.format(
+                    url, response.status_code))
         return response.json()
 
 
