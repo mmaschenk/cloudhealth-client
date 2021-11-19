@@ -27,10 +27,11 @@ CLICK_CONTEXT_SETTINGS = dict(
 
 
 @click.group(context_settings=CLICK_CONTEXT_SETTINGS, cls=DYMGroup)
-@click.option('--api-key',
-              required=True,
-              envvar='CLOUDHEALTH_API_KEY',
-              help='The API key to your Cloudhealth Account')
+@click.option(
+    '--api-key',
+    required=True,
+    envvar='CLOUDHEALTH_API_KEY',
+    help='The API key to your Cloudhealth Account')
 @click.pass_context
 def _cloudhealth(ctx, api_key):
     """A CloudHealth Command Line Interface
@@ -52,14 +53,16 @@ def cost(ctx):
 
 
 @cost.command('list')
-@click.option('-t',
-              '--account-type',
-              default='AWS-Account',
-              help='Type of accounts to list [default: AWS-Account]')
-@click.option('-r',
-              '--resource-type',
-              default='accounts',
-              help='Resource type to list')
+@click.option(
+    '-t',
+    '--account-type',
+    default='AWS-Account',
+    help='Type of accounts to list [default: AWS-Account]')
+@click.option(
+    '-r',
+    '--resource-type',
+    default='accounts',
+    help='Resource type to list')
 @click.pass_context
 def list(ctx, account_type, resource_type):
     """List possible objects for cost function.
@@ -76,31 +79,37 @@ def list(ctx, account_type, resource_type):
 
 
 @cost.command('current')
-@click.option('-t',
-              '--account-type',
-              default='AWS-Account',
-              help='The type to get the cost for [default: AWS-Account]')
-@click.option('-d',
-              '--by-days',
-              default=False,
-              is_flag=True,
-              help='Get current cost by days')
-@click.option('-S',
-              '--by-service',
-              default=False,
-              is_flag=True,
-              help='Get current cost by service')
-@click.option('-i',
-              '--instance',
-              default=False,
-              is_flag=True,
-              help='Get current cost for instances only')
-@click.option('-n',
-              '--account-name',
-              help='The account to get the cost for')
-@click.option('-id',
-              '--report_id',
-              help='Get current cost of perspective group from a report This only works in 2 dimensions reports')
+@click.option(
+    '-t',
+    '--account-type',
+    default='AWS-Account',
+    help='The type to get the cost for [default: AWS-Account]')
+@click.option(
+    '-d',
+    '--by-days',
+    default=False,
+    is_flag=True,
+    help='Get current cost by days')
+@click.option(
+    '-S',
+    '--by-service',
+    default=False,
+    is_flag=True,
+    help='Get current cost by service')
+@click.option(
+    '-i',
+    '--instance',
+    default=False,
+    is_flag=True,
+    help='Get current cost for instances only')
+@click.option(
+    '-n',
+    '--account-name',
+    help='The account to get the cost for')
+@click.option(
+    '-id',
+    '--report_id',
+    help='Get current cost of perspective group from a report This only works in 2 dimensions reports')
 @click.pass_context
 def current_cost(ctx, account_type, by_days, by_service, instance, account_name, report_id):
     """Retrieve current cost for all accounts.
