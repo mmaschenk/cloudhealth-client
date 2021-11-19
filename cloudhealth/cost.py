@@ -39,14 +39,9 @@ class CostClient(object):
     def list_accounts(self, account_type):
         response = self.client.get(self.CURRENT_COST_URL)
 
-        list_of_accounts = []
         accounts_list = response['dimensions'][0][account_type]
 
-        for account in accounts_list:
-            label = account['label']
-            list_of_accounts.append(label.encode('ascii'))
-
-        return list_of_accounts
+        return [acct['label'] for acct in accounts_list]
 
     def list_service(self):
 
