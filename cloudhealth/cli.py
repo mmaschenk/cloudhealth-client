@@ -122,24 +122,28 @@ def current_cost(ctx, account_type, by_days, by_service, instance, account_name,
     elif report_id:
         print(utils._format_json(cost.get_custom_report(report_id)))
     elif account_name:
-        print(cost.get_current_by_accounts(account_type, account_name)[account_name])
+        print(cost.get_current_by_accounts(
+            account_type, account_name)[account_name])
     else:
-        print(utils._format_json(cost.get_current_by_accounts(account_type, account_name)))
-
+        print(utils._format_json(
+            cost.get_current_by_accounts(account_type, account_name)))
 
 
 @cost.command('account-history')
-@click.option('-t',
-              '--account-type',
-              default='AWS-Account',
-              help='The type to get the cost for [default: AWS-Account]')
-@click.option('-n',
-              '--account-name',
-              help='The account to get the cost for')
-@click.option('-m',
-              '--month',
-              # default=utils._get_last_month,
-              help='Sum of cost for the last month [default: Last Month]')
+@click.option(
+    '-t',
+    '--account-type',
+    default='AWS-Account',
+    help='The type to get the cost for [default: AWS-Account]')
+@click.option(
+    '-n',
+    '--account-name',
+    help='The account to get the cost for')
+@click.option(
+    '-m',
+    '--month',
+    # default=utils._get_last_month,
+    help='Sum of cost for the last month [default: Last Month]')
 @click.pass_context
 def account_history(ctx, account_type, account_name, month):
     """Retrieve cost history by account.
@@ -151,37 +155,41 @@ def account_history(ctx, account_type, account_name, month):
     cost = ctx.obj['client']
     if account_name and month:
         full_history = cost.account_history(account_type)[month]
-        print full_history[account_name]
+        print(full_history[account_name])
     elif account_name:
         full_history = cost.account_history(account_type)
         for each_month, account in full_history.iteritems():
-            print each_month, account[account_name]
+            print(each_month, account[account_name])
     elif month:
         full_history = cost.account_history(account_type)[month]
         for name, amount in full_history.iteritems():
-            print name, amount
+            print(name, amount)
     else:
         full_history = cost.account_history(account_type)
         print(utils._format_json(full_history))
 
 
 @cost.command('service-history')
-@click.option('-t',
-              '--account-type',
-              default='AWS-Account',
-              help='The type to get the cost for [default: AWS-Account]')
-@click.option('-i',
-              '--instance',
-              default=False,
-              is_flag=True,
-              help='Get current cost for instances only')
-@click.option('-s',
-              '--service',
-              help='The service to get the cost for')
-@click.option('-m',
-              '--month',
-              # default=utils._get_last_month,
-              help='Sum of cost for the last month [default: Last Month]')
+@click.option(
+    '-t',
+    '--account-type',
+    default='AWS-Account',
+    help='The type to get the cost for [default: AWS-Account]')
+@click.option(
+    '-i',
+    '--instance',
+    default=False,
+    is_flag=True,
+    help='Get current cost for instances only')
+@click.option(
+    '-s',
+    '--service',
+    help='The service to get the cost for')
+@click.option(
+    '-m',
+    '--month',
+    # default=utils._get_last_month,
+    help='Sum of cost for the last month [default: Last Month]')
 @click.pass_context
 def service_history(ctx, account_type, service, month, instance):
     """Retrieve cost history by service.
@@ -193,21 +201,20 @@ def service_history(ctx, account_type, service, month, instance):
     cost = ctx.obj['client']
     if month and service:
         full_history = cost.service_history()[month]
-        print service, full_history[service]
+        print(service, full_history[service])
     elif service:
         full_history = cost.service_history()
         for each_month, service_cost in full_history.iteritems():
-            print each_month, service_cost[service]
+            print(each_month, service_cost[service])
     elif month:
         full_history = cost.service_history()[month]
         for each_month, service_cost in full_history.iteritems():
-            print each_month, service_cost
+            print(each_month, service_cost)
     elif instance:
         print(utils._format_json(cost.get_cost_for_instances()))
     else:
         full_history = cost.service_history()
         print(utils._format_json(full_history))
-
 
 
 @_cloudhealth.group(context_settings=CLICK_CONTEXT_SETTINGS, cls=DYMGroup)
@@ -216,6 +223,7 @@ def usage(ctx):
     """Retrieve resource usage related information
     """
     ctx.obj['client'] = ctx.obj['client'].usage
+
 
 @usage.command('list')
 @click.option('-t',
@@ -228,6 +236,7 @@ def list_services(ctx, account_type):
     """
     usage = ctx.obj['client']
     print(utils._format_json(usage.list_services(account_type)))
+
 
 @usage.command('get')
 @click.argument('resource-type')
@@ -249,7 +258,8 @@ def get_usage(ctx, resource_type, date):
     elif date:
         print(usage.get(resource_type=resource_type, date=date)[date])
     else:
-        print(usage.get(resource_type=resource_type, date=utils._get_yesterdays_date))
+        print(usage.get(resource_type=resource_type,
+              date=utils._get_yesterdays_date))
 
 
 @_cloudhealth.group(context_settings=CLICK_CONTEXT_SETTINGS, cls=DYMGroup)
